@@ -47,124 +47,6 @@
   }
   ::selection{ background:var(--leaf-400); color:var(--forest-950); }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:0.001s !important; transition-duration:0.001s !important; }
-  }
-
-  @keyframes splashFadeIn {
-    0% { opacity: 0; }
-    12% { opacity: 1; }
-    88% { opacity: 1; }
-    100% { opacity: 0; visibility: hidden; pointer-events: none; }
-  }
-
-  @keyframes splashScale {
-    0% { transform: scale(0.85) rotate(-5deg); opacity: 0; }
-    15% { transform: scale(1) rotate(0deg); opacity: 1; }
-    85% { transform: scale(1) rotate(0deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0deg); opacity: 0; visibility: hidden; }
-  }
-
-@keyframes splashGlow {
-    0%, 100% { filter: drop-shadow(0 0 10px rgba(115, 192, 68, 0)); }
-    50% { filter: drop-shadow(0 0 25px rgba(115, 192, 68, 0.6)); }
-  }
-
-  .splash-screen {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(140% 100% at 0% 0%, #1a2c18 0%, #0f1810 46%, #0a130c 100%);
-    z-index: 999;
-    animation: splashFadeIn 3.2s var(--ease) forwards;
-  }
-
-  .splash-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-.splash-icon {
-    width: 160px;
-    height: 160px;
-    animation: splashScale 3.5s var(--ease) forwards, splashGlow 2.8s ease-in-out forwards;
-    }
-
-  .splash-text {
-    font-family: 'Fraunces', serif;
-    font-size: 32px;
-    font-weight: 600;
-    color: #73c044;
-    letter-spacing: 0.02em;
-    opacity: 0;
-    animation: softFadeInUp 1s var(--ease) 0.5s forwards;
-  }
-
-  .splash-sub {
-    font-size: 13px;
-    color: #8fd856;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    font-weight: 700;
-    opacity: 0;
-    animation: softFadeInUp 1s var(--ease) 0.8s forwards;
-  }
-
-  @keyframes softFadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideInLeft {
-    0% {
-      opacity: 0;
-      transform: translateX(-80px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideInRight {
-    0% {
-      opacity: 0;
-      transform: translateX(80px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .smooth-load {
-    opacity: 0; 
-    animation: softFadeInUp 1s var(--ease) forwards;
-  }
-
-  .delay-1 { animation-delay: 2.9s; }
-  .delay-2 { animation-delay: 3.15s; }
-  .delay-3 { animation-delay: 3.4s; }
-
-  .sidebar {
-    animation: slideInLeft 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.7s both;
-  }
-
-  .main {
-    animation: slideInRight 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.7s both;
-  }
-
 
   .app{
     display:flex;
@@ -565,14 +447,6 @@
 <body>
 
 
-<div class="splash-screen" id="splashScreen">
-  <div class="splash-content">
-    <img src="assets/icon1.png" alt="PATI AI" class="splash-icon" />
-    <div class="splash-text">PATI AI</div>
-    <div class="splash-sub">ALL IN ONE Experience</div>
-  </div>
-</div>
-
 <div class="app">
   <svg style="display:none; width:0; height:0;">
     <defs>
@@ -589,8 +463,8 @@
     <div class="brand">
       <img src="assets/icon2.png" alt="PATI AI" class="brand-mark" />
       <div class="brand-text">
-        <h1>PATI AI</h1>
-        <p>DEPATI VII COFFEE</p>
+        <h1>BUKAN PATI</h1>
+        <p>AKSES KE WEBSITE RESMI</p>
       </div>
     </div>
 
@@ -598,14 +472,14 @@
 
 <div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
   
-    <a href="https://www.depaticoffee.online" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
+    <a href="https://www.depaticoffee.com" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width: 20px; height: 20px;">
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
     </svg>
     Kunjungi Website Resmi
   </a>
 
-  <a href="https://www.instagram.com/depativiicoffee" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
+  <a href="https://pesandptads.mindep666.workers.dev/" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -614,7 +488,7 @@
     Ikuti Kami
   </a>
 
-  <button class="new-chat" id="newChatBtn" style="display: inline-flex; align-items: center; gap: 8px;">
+  <button href="https://pesandptads.mindep666.workers.dev/" class="new-chat" id="newChatBtn" style="display: inline-flex; align-items: center; gap: 8px;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width: 20px; height: 20px;">
       <path d="M12 5v14M5 12h14"/>
     </svg>
@@ -648,16 +522,16 @@
      
         <div style="display: flex; flex-direction: column;">
           <span class="topbar-title" style="line-height: 1.2;">BUKAN PATI</span>
-          <span style="font-size: 11px; color: #73c044; font-weight: 600;">#tanyaPATI</span>
+          <span style="font-size: 11px; color: #73c044; font-weight: 600;">Bukan Website Resmi</span>
         </div>
     </div>
 
     <div class="scroll-area" id="scrollArea">
       <div class="empty" id="emptyState">
         
-        <img src="assets/icon1.png" alt="" class="empty-mark smooth-load delay-1" />
+        
           <h2 class="smooth-load delay-2">PATI AI - depaticoffee</h2>
-          <p class="smooth-load delay-3" style="margin-bottom: 4px;">Selamat datang! Saya PATI AI, asisten virtual Anda yang siap berbagi informasi dan edukasi</p>
+          <p class="smooth-load delay-3" style="margin-bottom: 4px;">Saya PATI AI, asisten virtual Anda yang siap berbagi informasi dan edukasi</p>
 
                   
         <div class="suggestion-grid" style="display: none;">
@@ -686,7 +560,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </div>
-      <div class="composer-hint">Ini adalah tahap pengembangan. PATI AI dapat membuat kesalahan</div>
+      <div class="composer-hint">Ini bukan web asli. PATI AI dapat membuat kesalahan</div>
       <div style="text-align: center; font-size: 10.5px; font-weight: bold; color: #ffffff; margin-top: 4px;">#AI Pertama di KOTA KONOHA</div>
     </div>
   </div>
@@ -697,7 +571,7 @@
 
 checkLocationAndRedirect();
   
-  const WORKER_URL = 'https://apipesandpt.lucyhell666.worker.dev';
+  const WORKER_URL = 'https://apipesandpt.mindep666.workers.dev';
 
   const scrollArea = document.getElementById('scrollArea');
   const thread = document.getElementById('thread');
@@ -708,7 +582,7 @@ checkLocationAndRedirect();
   const overlay = document.getElementById('overlay');
   const menuBtn = document.getElementById('menuBtn');
   const newChatBtn = document.getElementById('newChatBtn');
-  const splashScreen = document.getElementById('splashScreen');
+
 
   let conversationId = "";
   let sending = false;
@@ -716,10 +590,6 @@ checkLocationAndRedirect();
 
   const LEAF_ICON = `<svg viewBox="0 0 40 40" fill="none"><path d="M32 6C18 6 6 16 6 30c0 1.6.15 3.1.44 4.56C21 33.4 32 21.6 32 6z" fill="url(#leafGrad)"/></svg>`;
 
-
-  setTimeout(() => {
-    splashScreen.style.display = 'none';
-  }, 3800);
 
   function formatPesanAI(teks) {
     return teks
@@ -846,7 +716,6 @@ checkLocationAndRedirect();
           message: text, 
           conversation_id: conversationId, 
           user: userId,
-          urll: "depaticoffee.online"
         }),
       });
       const data = await res.json();
