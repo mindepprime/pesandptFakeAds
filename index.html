@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>PATI AI</title>
+<link rel="icon" type="image/png" href="assets/icon2.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest-950:#0e2118;
+    --forest-900:#123023;
+    --forest-800:#1b4332;
+    --leaf-700:#2a5c1a;
+    --leaf-600:#3a7a24;
+    --leaf-500:#52932f;
+    --leaf-400:#73c044;
+    --leaf-300:#8fd856;
+    --leaf-100:#c8e6a0;
+    --mist-50:#0f1510;
+    --mist-100:#1a2320;
+    --card:#141b18;
+    --ink:#f0f5f0;
+    --ink-soft:#d0dcd5;
+    --muted:#7c887e;
+    --line:#2a3c2f;
+    --danger:#b3492f;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
+    --shadow-md: 0 8px 24px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+    --shadow-lg: 0 16px 40px rgba(0,0,0,0.5);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+    --ease: cubic-bezier(.4,0,.2,1);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family:'Manrope', -apple-system, "Segoe UI", sans-serif;
+    background:var(--mist-50);
+    color:var(--ink);
+    overflow:hidden;
+  }
+  ::selection{ background:var(--leaf-400); color:var(--forest-950); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001s !important; transition-duration:0.001s !important; }
+  }
+
+  @keyframes splashFadeIn {
+    0% { opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; pointer-events: none; }
+  }
+
+  @keyframes splashScale {
+    0% { transform: scale(0.85) rotate(-5deg); opacity: 0; }
+    15% { transform: scale(1) rotate(0deg); opacity: 1; }
+    85% { transform: scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 0; visibility: hidden; }
+  }
+
+@keyframes splashGlow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(115, 192, 68, 0)); }
+    50% { filter: drop-shadow(0 0 25px rgba(115, 192, 68, 0.6)); }
+  }
+
+  .splash-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(140% 100% at 0% 0%, #1a2c18 0%, #0f1810 46%, #0a130c 100%);
+    z-index: 999;
+    animation: splashFadeIn 3.2s var(--ease) forwards;
+  }
+
+  .splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+.splash-icon {
+    width: 160px;
+    height: 160px;
+    animation: splashScale 3.5s var(--ease) forwards, splashGlow 2.8s ease-in-out forwards;
+    }
+
+  .splash-text {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #73c044;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: softFadeInUp 1s var(--ease) 0.5s forwards;
+  }
+
+  .splash-sub {
+    font-size: 13px;
+    color: #8fd856;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0;
+    animation: softFadeInUp 1s var(--ease) 0.8s forwards;
+  }
+
+  @keyframes softFadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-80px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(80px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .smooth-load {
+    opacity: 0; 
+    animation: softFadeInUp 1s var(--ease) forwards;
+  }
+
+  .delay-1 { animation-delay: 2.9s; }
+  .delay-2 { animation-delay: 3.15s; }
+  .delay-3 { animation-delay: 3.4s; }
+
+  .sidebar {
+    animation: slideInLeft 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.7s both;
+  }
+
+  .main {
+    animation: slideInRight 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) 2.7s both;
+  }
+
+
+  .app{
+    display:flex;
+    height:100dvh;
+    width:100%;
+  }
+
+  .sidebar{
+    width:272px;
+    flex-shrink:0;
+    background:
+      radial-gradient(140% 100% at 0% 0%, #1a2c18 0%, #0f1810 46%, #0a130c 100%);
+    color:#d4e5d0;
+    display:flex;
+    flex-direction:column;
+    padding:22px 18px;
+    position:relative;
+    z-index:20;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:4px 4px 22px;
+  }
+  .brand-mark{ width:34px; height:34px; flex-shrink:0; }
+  .brand-text h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    letter-spacing:0.01em;
+    margin:0;
+    color:#fff;
+  }
+  .brand-text p{
+    margin:2px 0 0;
+    font-size:11.5px;
+    color:#7aa876;
+    letter-spacing:0.02em;
+  }
+
+  .new-chat{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    width:100%;
+    padding:11px 14px;
+    border-radius:var(--radius-sm);
+    border:1px solid rgba(115,192,68,0.2);
+    background:rgba(115,192,68,0.08);
+    color:#d4e5d0;
+    font-family:'Manrope', sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .18s var(--ease), border-color .18s var(--ease), transform .12s var(--ease), box-shadow .18s var(--ease);
+  }
+  .new-chat:hover{ background:rgba(115,192,68,0.14); border-color:rgba(115,192,68,0.4); box-shadow: 0 4px 12px rgba(115, 192, 68, 0.15); }
+  .new-chat:active{ transform:scale(0.96); }
+  .new-chat svg{ width:15px; height:15px; }
+
+  .sidebar-section{
+    margin-top:26px;
+  }
+  .sidebar-label{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#5d8456;
+    padding:0 4px;
+    margin-bottom:10px;
+  }
+  .prompt-chip{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:transparent;
+    border:none;
+    color:#b4c9b0;
+    font-family:'Manrope', sans-serif;
+    font-size:13px;
+    line-height:1.4;
+    padding:9px 10px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:background .15s var(--ease), color .15s var(--ease), transform .12s var(--ease);
+  }
+  .prompt-chip:hover{ background:rgba(115,192,68,0.1); color:#d4e5d0; transform: translateX(4px); }
+
+  .sidebar-footer{
+    margin-top:auto;
+    padding:14px 6px 4px;
+    border-top:1px solid rgba(115,192,68,0.15);
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#7aa876;
+    font-size:11.5px;
+  }
+  .altitude-pill{
+    background:rgba(115,192,68,0.16);
+    color:#8fd856;
+    padding:3px 9px;
+    border-radius:20px;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:0.02em;
+  }
+
+  .topbar{
+    display:none;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--mist-50);
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .menu-btn{
+    width:36px; height:36px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    background:var(--card);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: background .15s var(--ease), box-shadow .15s var(--ease);
+  }
+  .menu-btn:hover{ background: rgba(115, 192, 68, 0.1); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
+  .menu-btn svg{ width:18px; height:18px; color:var(--ink-soft); }
+  .topbar-title{ font-family:'Fraunces', serif; font-weight:600; font-size:15px; }
+  .overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(14,33,24,0.6);
+    z-index:15;
+    opacity:0;
+    transition:opacity .2s var(--ease);
+  }
+
+  .main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    position:relative;
+    background:
+      radial-gradient(60% 40% at 50% 0%, rgba(115,192,68,0.03) 0%, rgba(115,192,68,0) 60%),
+      var(--mist-50);
+  }
+
+  .scroll-area{
+    flex:1;
+    overflow-y:auto;
+    scroll-behavior:smooth;
+  }
+  .scroll-area::-webkit-scrollbar{ width:9px; }
+  .scroll-area::-webkit-scrollbar-thumb{ background:#2a3c2f; border-radius:20px; border:2px solid var(--mist-50); transition: background .2s var(--ease); }
+  .scroll-area::-webkit-scrollbar-thumb:hover{ background:#3a4c3f; }
+
+  .thread{
+    max-width:760px;
+    margin:0 auto;
+    padding:36px 24px 140px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+
+  .empty{
+    max-width:640px;
+    margin:6vh auto 0;
+    padding:0 24px;
+    text-align:center;
+  }
+  .empty-mark{
+    width:56px; height:56px;
+    margin:0 auto 22px;
+  }
+  .empty h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-style:italic;
+    font-size:29px;
+    color:var(--leaf-400);
+    margin:0 0 10px;
+    line-height:1.3;
+  }
+  .empty p{
+    color:var(--muted);
+    font-size:14.5px;
+    line-height:1.65;
+    margin:0 auto 30px;
+    max-width:440px;
+  }
+  .suggestion-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    text-align:left;
+  }
+  .suggestion-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:14px 15px;
+    cursor:pointer;
+    font-family:'Manrope', sans-serif;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    box-shadow:var(--shadow-sm);
+    transition:transform .2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+  }
+  .suggestion-card:hover{
+    transform:translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(115, 192, 68, 0.18);
+    border-color:var(--leaf-400);
+    background: rgba(115, 192, 68, 0.06);
+  }
+  .suggestion-card b{ display:block; color:var(--leaf-400); font-weight:700; margin-bottom:3px; }
+
+  .msg{
+    display:flex;
+    gap:12px;
+    max-width:100%;
+    animation: rise .32s var(--ease) both;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .msg.user{ flex-direction:row-reverse; margin-left:14%; }
+  .msg.bot{ margin-right:6%; }
+
+  .avatar{
+    width:32px; height:32px;
+    border-radius:9px;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:2px;
+  }
+  .avatar.bot{
+    background:linear-gradient(150deg, #73c044, #2a5c1a);
+    box-shadow:var(--shadow-sm);
+  }
+  .avatar.bot svg{ width:17px; height:17px; }
+  .avatar.user{
+    background:var(--mist-100);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:13px;
+    font-weight:700;
+  }
+
+  .bubble-col{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .msg.user .bubble-col{ align-items:flex-end; }
+
+  .name-tag{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--muted);
+    padding:0 2px;
+  }
+
+  .bubble{
+    padding:12px 15px;
+    border-radius:var(--radius-md);
+    font-size:14.5px;
+    line-height:1.62;
+    white-space:pre-wrap;
+    word-break:break-word;
+    transition: background .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .msg.bot .bubble{
+    background:var(--card);
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-top-left-radius:5px;
+    box-shadow:var(--shadow-sm);
+  }
+  .msg.bot .bubble:hover{
+    background: rgba(20, 27, 24, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  .msg.user .bubble{
+    background:linear-gradient(135deg, #73c044, #52932f);
+    color:#000;
+    border-top-right-radius:5px;
+    box-shadow:0 4px 14px rgba(115,192,68,0.35);
+  }
+  .bubble.error{
+    background:#3a2418;
+    border:1px solid #6b3c2a;
+    color:#f0a89a;
+  }
+
+  .typing-bubble{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:14px 16px;
+  }
+  .leaf-pulse{
+    width:16px; height:16px;
+    animation: pulse 1.1s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ transform:scale(0.85); opacity:0.55; }
+    50%{ transform:scale(1.05); opacity:1; }
+  }
+  .typing-text{ font-size:13px; color:var(--muted); font-weight:600; }
+
+  .composer-wrap{
+    position:sticky;
+    bottom:0;
+    padding:16px 24px 20px;
+    background:linear-gradient(to top, var(--mist-50) 58%, rgba(15,21,16,0));
+  }
+  .composer{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:24px;
+    box-shadow:var(--shadow-lg);
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    padding:9px 9px 9px 20px;
+    transition:border-color .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  .composer:focus-within{
+    border-color:var(--leaf-400);
+    box-shadow:0 0 0 4px rgba(115,192,68,0.14), var(--shadow-lg);
+  }
+  .composer textarea{
+    flex:1;
+    border:none;
+    outline:none;
+    resize:none;
+    background:transparent;
+    font-family:'Manrope', sans-serif;
+    font-size:14.5px;
+    line-height:1.5;
+    color:var(--ink);
+    padding:10px 0;
+    max-height:160px;
+  }
+  .composer textarea::placeholder{ color:#5d7559; }
+
+  .send-btn{
+    width:38px; height:38px;
+    flex-shrink:0;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(140deg, #73c044, #2a5c1a);
+    color:#000;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(115,192,68,0.4);
+    transition:transform .14s var(--ease), box-shadow .14s var(--ease), opacity .14s;
+  }
+  .send-btn svg{ width:16px; height:16px; transform:translateX(1px); }
+  .send-btn:hover:not(:disabled){ transform:translateY(-3px) scale(1.08); box-shadow:0 8px 18px rgba(115,192,68,0.5); }
+  .send-btn:active:not(:disabled){ transform:scale(0.92); }
+  .send-btn:disabled{ opacity:0.4; cursor:default; box-shadow:none; }
+
+  .composer-hint{
+    max-width:760px;
+    margin:9px auto 0;
+    text-align:center;
+    font-size:11.5px;
+    color:#5d7559;
+  }
+
+  @media (max-width: 860px){
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      transform:translateX(-100%);
+      transition:transform .26s var(--ease);
+      box-shadow:var(--shadow-lg);
+      animation: none;
+    }
+    .sidebar.open{ transform:translateX(0); }
+    .overlay.show{ display:block; opacity:1; }
+    .topbar{ display:flex; }
+    .thread{ padding:24px 16px 130px; }
+    .msg.user{ margin-left:4%; }
+    .msg.bot{ margin-right:0; }
+    .suggestion-grid{ grid-template-columns:1fr; }
+    .empty{ margin-top:4vh; }
+    .composer-wrap{ padding:12px 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-content">
+    <img src="assets/icon1.png" alt="PATI AI" class="splash-icon" />
+    <div class="splash-text">PATI AI</div>
+    <div class="splash-sub">ALL IN ONE Experience</div>
+  </div>
+</div>
+
+<div class="app">
+  <svg style="display:none; width:0; height:0;">
+    <defs>
+      <linearGradient id="leafGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#8fd856"/>
+        <stop offset="1" stop-color="#2a5c1a"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <img src="assets/icon2.png" alt="PATI AI" class="brand-mark" />
+      <div class="brand-text">
+        <h1>PATI AI</h1>
+        <p>DEPATI VII COFFEE</p>
+      </div>
+    </div>
+
+<div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
+
+<div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-start;">
+  
+    <a href="https://www.depaticoffee.online" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width: 20px; height: 20px;">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+    </svg>
+    Kunjungi Website Resmi
+  </a>
+
+  <a href="https://www.instagram.com/depativiicoffee" target="_blank" class="new-chat" id="followIgBtn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+    </svg>
+    Ikuti Kami
+  </a>
+
+  <button class="new-chat" id="newChatBtn" style="display: inline-flex; align-items: center; gap: 8px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width: 20px; height: 20px;">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+    Percakapan baru
+  </button>
+
+</div>
+
+</div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Coba tanyakan</div>
+      <button class="prompt-chip" data-prompt="Apa rekomendasi dan menu andalan depati coffee?">Rekomendasi menu kopi khas Kerinci</button>
+      <button class="prompt-chip" data-prompt="Apa perbedaan kopi Arabika dan Robusta? Dan apa yang membuat rasa kopi depati coffee begitu khas?">Edukasi Perbedaan Kopi Arabika & Robusta</button>
+      <button class="prompt-chip" data-prompt="Bagaimana rute menuju Depati VII Coffee & Resort dari kota terdekat?">Rute menuju depaticoffee</button>
+      <button class="prompt-chip" data-prompt="Apakah perlu reservasi dulu sebelum datang?">Ketentuan reservasi</button>
+    </div>
+
+    <div class="sidebar-footer">
+      <span class="altitude-pill">PATI AI</span>
+      <span>by <b>Mahar Setia, S.Pd., Gr.</b></span>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+          <button class="menu-btn" id="menuBtn" aria-label="Buka menu">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+      
+     
+        <div style="display: flex; flex-direction: column;">
+          <span class="topbar-title" style="line-height: 1.2;">BUKAN PATI</span>
+          <span style="font-size: 11px; color: #73c044; font-weight: 600;">#tanyaPATI</span>
+        </div>
+    </div>
+
+    <div class="scroll-area" id="scrollArea">
+      <div class="empty" id="emptyState">
+        
+        <img src="assets/icon1.png" alt="" class="empty-mark smooth-load delay-1" />
+          <h2 class="smooth-load delay-2">PATI AI - depaticoffee</h2>
+          <p class="smooth-load delay-3" style="margin-bottom: 4px;">Selamat datang! Saya PATI AI, asisten virtual Anda yang siap berbagi informasi dan edukasi</p>
+
+                  
+        <div class="suggestion-grid" style="display: none;">
+          <button class="suggestion-card" data-prompt="Apa itu depaticoffee? Dan apa saja zona-zona nya?">
+            <b>Mengenal Depati Coffee</b>mulai menjelajah
+          </button>
+          <button class="suggestion-card" data-prompt="Jam berapa depaticoffee buka?">
+            <b>Jam Buka & Operasional</b>cari tahu kapan kami buka di waktu Weekday/Weekend
+          </button>
+          <button class="suggestion-card" data-prompt="Bagaimana rute menuju Depati VII Coffee & Resort dari kota tedekat?">
+            <b>Rute lokasi</b>arah menuju depaticoffee dari kota terdekat
+          </button>
+          <button class="suggestion-card" data-prompt="Apakah menu andalan depati coffee?">
+            <b>Cek Menu</b>kopi & cemilan khas kerinci
+          </button>
+        </div>
+      </div>
+
+      <div class="thread" id="thread"></div>
+    </div>
+
+    <div class="composer-wrap">
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Tulis pesan untuk PATI AI …"></textarea>
+        <button class="send-btn" id="sendBtn" aria-label="Kirim">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="composer-hint">Ini adalah tahap pengembangan. PATI AI dapat membuat kesalahan</div>
+      <div style="text-align: center; font-size: 10.5px; font-weight: bold; color: #ffffff; margin-top: 4px;">#AI Pertama di KOTA KONOHA</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  
+
+checkLocationAndRedirect();
+  
+  const WORKER_URL = 'https://apipesandpt.lucyhell666.worker.dev';
+
+  const scrollArea = document.getElementById('scrollArea');
+  const thread = document.getElementById('thread');
+  const emptyState = document.getElementById('emptyState');
+  const input = document.getElementById('input');
+  const sendBtn = document.getElementById('sendBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const menuBtn = document.getElementById('menuBtn');
+  const newChatBtn = document.getElementById('newChatBtn');
+  const splashScreen = document.getElementById('splashScreen');
+
+  let conversationId = "";
+  let sending = false;
+  const userId = "web-" + Math.random().toString(36).slice(2, 10);
+
+  const LEAF_ICON = `<svg viewBox="0 0 40 40" fill="none"><path d="M32 6C18 6 6 16 6 30c0 1.6.15 3.1.44 4.56C21 33.4 32 21.6 32 6z" fill="url(#leafGrad)"/></svg>`;
+
+
+  setTimeout(() => {
+    splashScreen.style.display = 'none';
+  }, 3800);
+
+  function formatPesanAI(teks) {
+    return teks
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(?!\s)([^*]+?)(?<!\s)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" style="color: #73c044; font-weight: bold; text-decoration: underline;">$1</a>');
+  }
+
+  function autoResize(){
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 160) + 'px';
+  }
+  input.addEventListener('input', autoResize);
+
+  function openSidebar(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+  menuBtn.addEventListener('click', openSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  newChatBtn.addEventListener('click', () => {
+    conversationId = "";
+    thread.innerHTML = "";
+    emptyState.style.display = "block";
+    
+    const animElements = document.querySelectorAll('.smooth-load');
+    animElements.forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight;
+      el.style.animation = null; 
+    });
+
+    closeSidebar();
+    input.value = "";
+    autoResize();
+  });
+
+  document.querySelectorAll('[data-prompt]').forEach(el => {
+    el.addEventListener('click', () => {
+      input.value = el.getAttribute('data-prompt');
+      autoResize();
+      closeSidebar();
+      sendMessage();
+    });
+  });
+
+  function scrollToBottom(){
+    scrollArea.scrollTo({ top: scrollArea.scrollHeight, behavior: 'smooth' });
+  }
+
+  function addMessage(role, text, isError){
+    emptyState.style.display = "none";
+
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar ' + (role === 'user' ? 'user' : 'bot');
+    avatar.innerHTML = role === 'user' ? 'Anda' : LEAF_ICON;
+
+    const col = document.createElement('div');
+    col.className = 'bubble-col';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble' + (isError ? ' error' : '');
+    
+    if (role === 'bot' && !isError) {
+      bubble.innerHTML = formatPesanAI(text);
+    } else {
+      bubble.textContent = text;
+    }
+
+    col.appendChild(bubble);
+    msg.appendChild(avatar);
+    msg.appendChild(col);
+    thread.appendChild(msg);
+    scrollToBottom();
+    return bubble;
+  }
+
+  function addTyping(){
+    const msg = document.createElement('div');
+    msg.className = 'msg bot';
+    msg.id = 'typingRow';
+
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar bot';
+    avatar.innerHTML = LEAF_ICON;
+
+    const col = document.createElement('div');
+    col.className = 'bubble-col';
+    col.innerHTML = `
+      <div class="bubble typing-bubble">
+        <svg class="leaf-pulse" viewBox="0 0 40 40" fill="none"><path d="M32 6C18 6 6 16 6 30c0 1.6.15 3.1.44 4.56C21 33.4 32 21.6 32 6z" fill="url(#leafGrad)"/></svg>
+        <span class="typing-text">PATI AI sedang mengetik…</span>
+      </div>`;
+
+    msg.appendChild(avatar);
+    msg.appendChild(col);
+    thread.appendChild(msg);
+    scrollToBottom();
+  }
+
+  function removeTyping(){
+    const row = document.getElementById('typingRow');
+    if (row) row.remove();
+  }
+
+  async function sendMessage(){
+    const text = input.value.trim();
+    if (!text || sending) return;
+
+    sending = true;
+    sendBtn.disabled = true;
+    addMessage('user', text);
+    input.value = '';
+    autoResize();
+    addTyping();
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          message: text, 
+          conversation_id: conversationId, 
+          user: userId,
+          urll: "depaticoffee.online"
+        }),
+      });
+      const data = await res.json();
+      removeTyping();
+
+      if (!res.ok) {
+        addMessage('bot', data.error || 'Ini adalah web tidak resmi', true);
+      } else {
+        conversationId = data.conversation_id || conversationId;
+        addMessage('bot', data.answer || '(tidak ada jawaban)');
+      }
+    } catch (err) {
+      removeTyping();
+      addMessage('bot', 'Web tidak resmi, silakan menuju yang resmi', true);
+    } finally {
+      sending = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+</script>
+
+</body>
+</html>
